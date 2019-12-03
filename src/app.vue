@@ -6,10 +6,13 @@
 export default {
   data() {
     return {
-      text: 'abc'
+      text: 'abcas333点但是'
     }
-  }
+  },
   // components: {}
+  created() {
+    console.log(123);
+  }
 };
 </script>
 

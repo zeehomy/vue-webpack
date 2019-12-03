@@ -1,7 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HTMLPlugin = require('html-webpack-plugin');
 
-module.exports = {
+const isDev = process.env.NODE_ENV === "development";
+
+const config = {
   target: 'web',
   entry: path.join(__dirname, 'index.js'),    // __dirname: 本文件的目录（根目录）; join方法拼接两个参数;path.join: 绝对路径
   output: {
@@ -22,6 +26,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [              // 应该还需要style-loader
+          'style-loader',
           'css-loader'      // 读取css文件，解析css语法，不涉及如何在html中使用.loader为逐层负责处理
         ]
       },
@@ -30,6 +35,7 @@ module.exports = {
       {
         test: /\.styl/,                     // less sass
         use: [
+          'style-loader',
           'css-loader',
           'stylus-loader'         // 一层一层往上处理；每个loader只处理自己关心的部分
         ]
@@ -49,6 +55,29 @@ module.exports = {
     ]
   },
   plugins:[    
-    new VueLoaderPlugin()     //new一个实例
+    new VueLoaderPlugin(),      // new一个实例,必须于vue-loader配套使用
+    new HTMLPlugin()            // 决定能否生成index.html渲染
   ]
 }
+
+if (isDev) {
+  config.devtool = '#cheap-module-eval-source-map'     // 可以配置不同模式的source map，不同的模式有不同的优点
+  config.devServer = {
+    port: 8000,
+    host: '0.0.0.0',    // 使用0.0.0.0既可以用localhost访问，又可以用IP访问
+    overlay: {
+      errors: true      // 启动错误提示遮罩层
+    },
+    // open: true,
+    // historyApiFallback    //帮助把devServer不认识的地址都映射到index.html（通过配置实现）
+    hot: true        // 只渲染更新的组件。要配合plugin使用
+  };
+
+  config.plugins.push(
+    new webpack.HotModuleReplacementPlugin(),   // hot: true需要此plugin
+    // 还可以添加如何处力热加的代码
+    new webpack.NoEmitOnErrorsPlugin()      // 减少不需要的错误信息展示
+  );
+}
+
+module.exports = config;
