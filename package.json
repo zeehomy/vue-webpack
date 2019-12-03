@@ -1,0 +1,29 @@
+{
+  "name": "vue-webpack",
+  "version": "1.0.0",
+  "description": "learn vue webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "remark": "echo \"如果直接再看命令行中运行webpack，则使用的为全局的webpack，可能会和当前项目中的版本不一样，所以要手动配置。\"",
+    "build": "webpack --config webpack.config.js",
+    "dev": "webpack-dev-server --config webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "css-loader": "^3.2.0",
+    "file-loader": "^5.0.2",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "url-loader": "^3.0.0",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.41.2",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.10"
+  }
+}
