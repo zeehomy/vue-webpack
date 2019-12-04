@@ -6,7 +6,7 @@
 export default {
   data() {
     return {
-      text: 'abcas333点但是'
+      text: 'abcas333点但是 sdf'
     }
   },
   // components: {}

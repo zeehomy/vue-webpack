@@ -1,5 +1,9 @@
 const path = require('path');
+
+// 也有webpack内置的plugin
 const webpack = require('webpack');
+
+// plugin有通过npm安装的
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HTMLPlugin = require('html-webpack-plugin');
 
