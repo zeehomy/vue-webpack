@@ -11,7 +11,9 @@ export default {
   },
   // components: {}
   created() {
-    console.log(123);
+    
+    
+
   }
 };
 </script>
