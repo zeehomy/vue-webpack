@@ -55,6 +55,14 @@ const config = {
             }
           }
         ]
+      },
+      {
+        test: /\.jsx$/,
+        use: [
+          {
+            loader: 'babel-loader',     // babel-loader用于处理jsx文件代码
+          }
+        ]
       }
     ]
   },
