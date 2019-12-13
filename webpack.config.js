@@ -31,16 +31,30 @@ const config = {
         test: /\.css$/,
         use: [              // 应该还需要style-loader
           'style-loader',
-          'css-loader'      // 读取css文件，解析css语法，不涉及如何在html中使用.loader为逐层负责处理
+          {
+            loader: 'css-loader',  // 读取css文件，解析css语法，不涉及如何在html中使用.loader为逐层负责处理
+            options: {
+              importLoaders: 1,     // @import
+            }
+          },     
+          {
+            loader: 'postcss-loader'
+          }
         ]
       },
 
       // 每种文件都需要重新配置全部的所需的loader
       {
-        test: /\.styl/,                     // less sass
+        test: /\.styl/,                // less sass    经测试同时处理vue中的stylus代码，postcss也同时对vue组件生效
         use: [
           'style-loader',
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true
+            }
+          },
           'stylus-loader'         // 一层一层往上处理；每个loader只处理自己关心的部分
         ]
       },
