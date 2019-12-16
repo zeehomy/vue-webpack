@@ -81,7 +81,7 @@ const config = {
     ]
   },
   plugins:[    
-    new VueLoaderPlugin(),      // new一个实例,必须于vue-loader配套使用
+    new VueLoaderPlugin(),      // new一个实例,必须与vue-loader配套使用
     new HTMLPlugin()            // 决定能否生成index.html渲染
   ]
 }
@@ -101,7 +101,7 @@ if (isDev) {
 
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),   // hot: true需要此plugin
-    // 还可以添加如何处力热加的代码
+    // 还可以添加如何处理热加载的代码
     new webpack.NoEmitOnErrorsPlugin()      // 减少不需要的错误信息展示
   );
 }

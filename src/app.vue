@@ -2,6 +2,7 @@
   <div id="app">
     <div id="cover"></div>
     <Header></Header>
+    <Todo></Todo>
     <Footer></Footer>
   </div>
 </template>
@@ -9,6 +10,7 @@
 <script>
 import Header from './todo/header.vue'
 import Footer from './todo/footer.jsx'
+import Todo from './todo/todo.vue'
 
 export default {
   data() {
@@ -16,13 +18,13 @@ export default {
       
     }
   },
-  // components: {}
   created() {
 
   },
   components: {
     Header,
-    Footer
+    Footer,
+    Todo
   }
 };
 </script>
