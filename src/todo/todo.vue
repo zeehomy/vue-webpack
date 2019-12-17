@@ -6,13 +6,24 @@
       placeholder="接下去要做什么？"
       @keyup.enter="addTodo"
     />
+    <Item :todo="todo"></Item>
   </section>
 </template>
 
 <script>
+import Item from './item.vue'
 export default {
+  components: {
+    Item
+  },
   data() {
-    return {};
+    return {
+      todo: {
+        id: 0,
+        content: 'some thing need to do.',
+        completed: false
+      }
+    };
   },
   methods: {
     addTodo() {
