@@ -7,22 +7,26 @@
       @keyup.enter="addTodo"
     />
     <Item :todo="todo"></Item>
+    <Tabs :filter="filter"></Tabs>
   </section>
 </template>
 
 <script>
 import Item from './item.vue'
+import Tabs from './tabs.vue'
 export default {
   components: {
-    Item
+    Item,
+    Tabs
   },
   data() {
     return {
       todo: {
         id: 0,
-        content: 'some thing need to do.',
+        content: 'this some thing need to do.',
         completed: false
-      }
+      },
+      filter: 'all'
     };
   },
   methods: {

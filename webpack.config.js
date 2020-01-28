@@ -34,7 +34,7 @@ const config = {
           {
             loader: 'css-loader',  // 读取css文件，解析css语法，不涉及如何在html中使用.loader为逐层负责处理
             options: {
-              importLoaders: 1,     // @import
+              importLoaders: 1,     // @import  0/1/数字表示后续提供的loader的数量（在css loader处理之前）
             }
           },     
           {
