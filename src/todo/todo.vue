@@ -6,7 +6,10 @@
       placeholder="接下去要做什么？"
       @keyup.enter="addTodo"
     />
-    <Item :todo="todo"></Item>
+    <Item v-for="todo in todos" 
+      :key="todo.ig"
+      :todo="todo"
+    ></Item>
     <Tabs :filter="filter"></Tabs>
   </section>
 </template>
@@ -14,6 +17,7 @@
 <script>
 import Item from './item.vue'
 import Tabs from './tabs.vue'
+let id = 0;
 export default {
   components: {
     Item,
@@ -21,17 +25,22 @@ export default {
   },
   data() {
     return {
-      todo: {
+      todos: []   /* {
         id: 0,
         content: 'this some thing need to do.',
         completed: false
-      },
+      } */,
       filter: 'all'
     };
   },
   methods: {
-    addTodo() {
-      
+    addTodo(event) {
+      this.todos.unshift({
+        id: id++,
+        content: event.target.value.trim(),
+        completed: false
+      });
+      event.target.value = '';
     }
   }
 };
