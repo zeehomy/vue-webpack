@@ -152,7 +152,7 @@ if (isDev) {
         return chunk.name !== 'my-excluded-chunk';
       }
     },
-    runtimeChunk: true
+    runtimeChunk: true     // 与webpack有关的，添加模块时id顺序有关的代码。避免从中间添加模块
   };
 }
 
