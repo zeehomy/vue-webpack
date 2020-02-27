@@ -7,13 +7,16 @@ const webpack = require('webpack');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HTMLPlugin = require('html-webpack-plugin');
 
+// 打包时提取css文件的插件
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const isDev = process.env.NODE_ENV === "development";
 
 const config = {
   target: 'web',
   entry: path.join(__dirname, 'index.js'),    // __dirname: 本文件的目录（根目录）; join方法拼接两个参数;path.join: 绝对路径
   output: {
-    filename: 'bundle.js',
+    filename: 'bundle.[hash:8].js',
     path: path.join(__dirname, 'dist')
   },
 
@@ -27,38 +30,26 @@ const config = {
         test: /\.vue$/,    // 正则匹配文件类型
         loader: 'vue-loader'
       },
-      {
-        test: /\.css$/,
-        use: [              // 应该还需要style-loader
-          'style-loader',
-          {
-            loader: 'css-loader',  // 读取css文件，解析css语法，不涉及如何在html中使用.loader为逐层负责处理
-            options: {
-              importLoaders: 1,     //   0/1/数字表示后续提供的loader(处理@import所需)的数量（在css loader处理之前）
-              // 1: 后面只有一个postcss-loader
-            }
-          },     
-          {
-            loader: 'postcss-loader'
-          }
-        ]
-      },
 
-      // 每种文件都需要重新配置全部的所需的loader
-      {
-        test: /\.styl/,                // less sass    经测试同时处理vue中的stylus代码，postcss也同时对vue组件生效
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          'stylus-loader'         // 一层一层往上处理；每个loader只处理自己关心的部分
-        ]
-      },
+      // 优化时因没有添加css文件儿注掉
+      // {
+      //   test: /\.css$/,
+      //   use: [              // 应该还需要style-loader
+      //     'style-loader',
+      //     {
+      //       loader: 'css-loader',  // 读取css文件，解析css语法，不涉及如何在html中使用.loader为逐层负责处理
+      //       options: {
+      //         importLoaders: 1,     //   0/1/数字表示后续提供的loader(处理@import所需)的数量（在css loader处理之前）
+      //         // 1: 后面只有一个postcss-loader
+      //       }
+      //     },     
+      //     {
+      //       loader: 'postcss-loader'
+      //     }
+      //   ]
+      // },
+
+      
       {
         test: /\.(gif|jpg|jpeg|png|svg)$/,
         use: [
@@ -88,6 +79,24 @@ const config = {
 }
 
 if (isDev) {
+
+  config.module.rules.push(
+    // 每种文件都需要重新配置全部的所需的loader
+    {
+      test: /\.styl/,                // less sass    经测试同时处理vue中的stylus代码，postcss也同时对vue组件生效
+      use: [
+        'style-loader',
+        'css-loader',
+        {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true
+          }
+        },
+        'stylus-loader'         // 一层一层往上处理；每个loader只处理自己关心的部分
+      ]
+    }
+  );
   config.devtool = '#cheap-module-eval-source-map'     // 可以配置不同模式的source map，不同的模式有不同的优点
   config.devServer = {
     port: 8000,
@@ -104,6 +113,31 @@ if (isDev) {
     new webpack.HotModuleReplacementPlugin(),   // hot: true需要此plugin
     // 还可以添加如何处理热加载的代码
     new webpack.NoEmitOnErrorsPlugin()      // 减少不需要的错误信息展示
+  );
+} else {
+
+  config.output.filename = '[name].[chunkhash:8].js';
+
+  config.module.rules.push({
+    test: /\.styl/,
+    use: [
+      MiniCssExtractPlugin.loader,          // 添加 MiniCssExtract
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          sourceMap: true
+        }
+      },
+      'stylus-loader'         // 一层一层往上处理；每个loader只处理自己关心的部分
+    ]
+  });
+
+  // 添加 MiniCssExtractPlugin
+  config.plugins.push(
+    new MiniCssExtractPlugin({    
+      filename: 'styles.[contentHash:8].css'
+    })  
   );
 }
 
