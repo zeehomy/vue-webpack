@@ -116,7 +116,11 @@ if (isDev) {
   );
 } else {
 
-  config.output.filename = '[name].[chunkhash:8].js';
+  config.entry = {
+    app: path.join(__dirname, 'index.js'),
+    // vendor: ['vue']
+  };
+  config.output.filename = '[name].[chunkhash:8].js';    // 使用chunkhash使打包时类库和业务代码有不同的hash
 
   config.module.rules.push({
     test: /\.styl/,
@@ -137,8 +141,19 @@ if (isDev) {
   config.plugins.push(
     new MiniCssExtractPlugin({    
       filename: 'styles.[contentHash:8].css'
-    })  
+    })
   );
+
+  // 优化webpack
+  config.optimization = {
+    splitChunks: {
+      // chunks: 'all'
+      chunks (chunk) {
+        return chunk.name !== 'my-excluded-chunk';
+      }
+    },
+    runtimeChunk: true
+  };
 }
 
 module.exports = config;
